@@ -1,9 +1,6 @@
-from django.views.generic.simple import direct_to_template
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render, redirect
 from privatebeta.forms import InviteRequestForm
+
 
 def invite(request, form_class=InviteRequestForm, template_name="privatebeta/invite.html", extra_context=None):
     """
@@ -34,15 +31,15 @@ def invite(request, form_class=InviteRequestForm, template_name="privatebeta/inv
     form = form_class(request.POST or None)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse('privatebeta_sent'))
+        return redirect('privatebeta_sent')
 
     context = {'form': form}
 
     if extra_context is not None:
         context.update(extra_context)
 
-    return render_to_response(template_name, context,
-        context_instance=RequestContext(request))
+    return render(request, template_name, context)
+
 
 def sent(request, template_name="privatebeta/sent.html", extra_context=None):
     """
@@ -70,4 +67,4 @@ def sent(request, template_name="privatebeta/sent.html", extra_context=None):
     :template:`privatebeta/sent.html` or the template name specified by
     ``template_name``.
     """
-    return direct_to_template(request, template=template_name, extra_context=extra_context)
+    return render(request, template_name, extra_context)
