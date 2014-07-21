@@ -36,7 +36,7 @@ You will also need to create two templates.  The first is
 
     {% block content %}
     <h3>Enter your email address and we'll send you an invite soon</h3>
-    <form action="{% url privatebeta_invite %}" method="post">
+    <form action="{% url 'privatebeta_invite' %}" method="post">
     {{ form }}
     {% csrf_token %}
     <input type="submit" value="Submit" />
